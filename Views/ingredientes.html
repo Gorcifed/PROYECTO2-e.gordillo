@@ -8,26 +8,28 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-3">
         <h1>Ingredientes</h1>
-        <a href="/">🏠 Inicio</a>
-        <table>
+        <a class="btn btn-secondary" href="/">🏠 Inicio</a>
+        <table class="table table-striped table-hover mt-2">
             <tr>
-                <th>id</th>
-                <th>nombre</th>
-                <th>calorias</th>
-                <th>precio</th>
-                <th>vegetariano</th>
-                <th>tipo</th>
-                <th>sabor</th>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Calorias</th>
+                <th>Precio</th>
+                <th>Inventario</th>
+                <th>Vegetariano</th>
+                <th>Tipo</th>
+                <th>Sabor</th>
             </tr>
         {% for ingrediente in ingredientes %}
             <tr>
                 <td>{{ ingrediente.id }}</td>
                 <td>{{ ingrediente.nombre }}</td>
-                <td>{{ ingrediente.calorias }}</td>
-                <td>{{ ingrediente.precio }}</td>
-                <td>{{ ingrediente.vegetariano }}</td>
+                <td align="center">{{ ingrediente.calorias }}</td>
+                <td align="right">{{ ingrediente.precio | currencyFormat }}</td>
+                <td align="center">{{ ingrediente.inventario | round(2) }}</td>
+                <td align="center">{{ ingrediente.vegetariano }}</td>
                 <td>{{ ingrediente.tipo }}</td>
                 <td>{{ ingrediente.sabor }}</td>
             </tr>
@@ -36,11 +38,3 @@
     </div>
 </body>
 </html>
-
-
-
-
-
-
-
-

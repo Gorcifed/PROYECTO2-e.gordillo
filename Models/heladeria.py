@@ -1,6 +1,7 @@
 from Models.ingrediente import Ingrediente
 from Models.producto import Producto
 from funciones import *
+import decimal
 
 # Clase que representa la heladería
 class Heladeria():
@@ -12,13 +13,13 @@ class Heladeria():
 
     # método que permite vender un producto
     # producto: producto a vender
-    def vender_producto(self, producto: Producto) -> None:
+    def vender_producto(self, producto: Producto) -> bool:
         if not producto.calcular_ingredientes():
             return False
 
         self.descontar_inventario(producto)
         producto.ventas_dia = producto.ventas_dia + 1
-        producto.precio_ventas_dia = producto.precio_ventas_dia + producto.precio_publico
+        producto.precio_ventas_dia = producto.precio_ventas_dia + producto.precio
         return True
 
     # método que descuenta del inventario el producto vendido
@@ -26,9 +27,9 @@ class Heladeria():
     def descontar_inventario(self, producto):
         for ingrediente in producto.ingredientes:
             if ingrediente.tipo == 'Complemento':
-                ingrediente.inventario = ingrediente.inventario - 1.0
+                ingrediente.inventario = ingrediente.inventario - decimal.Decimal(1.0)
             elif ingrediente.tipo == 'Base': # ingrediente base
-                ingrediente.inventario = ingrediente.inventario - 0.2
+                ingrediente.inventario = ingrediente.inventario - decimal.Decimal(0.2)
 
     # Método que renueva el inventario de ingredientes a 0 (solo aplica para complementos)
     def renovar_inventario(self):
@@ -67,8 +68,20 @@ class Heladeria():
 
     @property
     def productos(self) -> list:
-        """ Devuelve el valor del atributo privado '_productos' """
-        return self._productos
+        """ Devuelve el valor del atributo privado 'productos' """
+        return self.__productos
+    
+    @productos.setter
+    def productos(self, value:list) -> None:
+        """ 
+        Establece un nuevo valor para el atributo privado 'productos'
+    
+        Valida que el valor enviado corresponda al tipo de dato del atributo
+        """ 
+        if isinstance(value, list):
+            self.__productos = value
+        else:
+            raise ValueError('Expected list')
 
     @property
     def ingredientes(self) -> list:

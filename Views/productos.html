@@ -8,33 +8,41 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-3">
         <h1>Productos</h1>
-        <a href="/">🏠 Inicio</a>
-        <table>
+        <a class="btn btn-secondary" href="/">🏠 Inicio</a>
+        <table class="table table-striped table-hover mt-2">
             <tr>
-                <th>id</th>
-                <th>nombre</th>
-                <th>precio</th>
-                <th>ventas_dia</th>
-                <th>precio_ventas_dia</th>
-                <th>tipo</th>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Ventas día</th>
+                <th>Valor ventas día</th>
+                <th>Tipo</th>
                 <th>Ingredientes</th>
-            </tr>
+            </tr> 
         {% for producto in productos %}
             <tr>
                 <td>{{ producto.id }}</td>
                 <td>{{ producto.nombre }}</td>
-                <td>{{ producto.ventas_dia }}</td>
-                <td>{{ producto.precio_ventas_dia }}</td>
+                <td align="right">{{ producto.precio | currencyFormat }}</td>
+                <td align="center">{{ producto.ventas_dia }}</td>
+                <td align="right">{{ producto.precio_ventas_dia | currencyFormat }}</td>
                 <td>{{ producto.tipo }}</td>
                 <td>
-                    <table>
+                    <table class="table table-striped table-hover">
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Inventario</th>
+                        </tr> 
                         {% for ingrediente in producto.ingredientes %}
                             <tr>
                                 <td>{{ ingrediente.id }}</td>
                                 <td>{{ ingrediente.nombre }}</td>
                                 <td>{{ ingrediente.tipo }}</td>
+                                <td>{{ ingrediente.inventario | round(2) }}</td>
                             </tr>
                         {% endfor %}
                     </table>
