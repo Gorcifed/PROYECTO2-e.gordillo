@@ -1,6 +1,7 @@
 from db import db
 from sqlalchemy import text, ForeignKey
 from funciones import *
+from Models.ingrediente import Ingrediente
 
 # Clase que representa el producto
 class Producto(db.Model):
@@ -44,7 +45,7 @@ class Producto(db.Model):
     def calcular_rentabilidad(self) -> int:
         return self.precio - self.calcular_costo()
 
- # Método que determina si hay suficientes ingredientes para hacer el producto
+    # Método que determina si hay suficientes ingredientes para hacer el producto
     def calcular_ingredientes(self) -> bool:
         for ingrediente in self.ingredientes:
             if ingrediente.tipo == 'Complemento':
@@ -54,6 +55,17 @@ class Producto(db.Model):
                 if ingrediente.inventario < .2:
                     return False
         return True
+    
+     # Método que returna el ingrediente faltante de un producto, None si hay suficiente
+    def obtener_ingrediente_faltante(self) -> Ingrediente:
+        for ingrediente in self.ingredientes:
+            if ingrediente.tipo == 'Complemento':
+                if ingrediente.inventario < 1:
+                     return ingrediente
+            else: # Es Base
+                if ingrediente.inventario < .2:
+                    return ingrediente
+        return None
 
     @property
     def ingredientes(self) -> list:

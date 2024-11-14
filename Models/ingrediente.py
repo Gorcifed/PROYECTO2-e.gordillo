@@ -20,7 +20,7 @@ class Ingrediente(db.Model):
 
     # Método que permite abastecer un ingrediente
     def abastecer(self) -> None:
-        if self.tipo == 'Ingrediente':
+        if self.tipo == 'Complemento':
              self.inventario = self.inventario + decimal.Decimal(10.0)
              return
         # Es base
@@ -28,4 +28,4 @@ class Ingrediente(db.Model):
 
     # Método que permite renovar el inventario
     def renovar_inventario(self):
-        self.inventario = 0.0
+        self.inventario = decimal.Decimal(0.0)

@@ -6,6 +6,7 @@ from Models.ingrediente import Ingrediente
 from Models.producto import Producto
 from Models.heladeria import Heladeria
 import os
+import traceback 
 
 load_dotenv(override=True)
 
@@ -24,7 +25,7 @@ with app.app_context():
         producto.ingredientes = []
         for ingrediente in ingredientes:
             if ingrediente.id == producto.id_ingrediente1:
-                producto.ingredientes.append(ingrediente)
+                producto.ingredientes.append(ingrediente)   
             elif ingrediente.id == producto.id_ingrediente2:
                 producto.ingredientes.append(ingrediente)
             elif ingrediente.id == producto.id_ingrediente3:
@@ -50,28 +51,45 @@ def abastecer():
      try:
          heladeria.abastecer_inventario()
          return render_template('Success.html', mensaje = f"Se abasteció el inventario 📦")
-     except ValueError as e:
+     except Exception as e:
+        return render_template('Error.html', mensaje = f"Error {str(e)}")
+
+@app.route('/renovarInventario')
+def renovarInventario():
+     try:
+         heladeria.renovar_inventario()
+         return render_template('Success.html', mensaje = f"Se renovó el inventario de complementos 🫗")
+     except Exception as e:
         return render_template('Error.html', mensaje = f"Error {str(e)}")
 
 @app.route('/vender')
 def venderLista():
     return render_template("productosVenta.html", productos = heladeria.productos)
 
+@app.route('/productoMasRentable')
+def productoMasRentable():
+     try:
+         producto_mas_rentable = heladeria.obtener_producto_mas_rentable().get("nombre", "")
+         rentabilidad = heladeria.obtener_producto_mas_rentable().get("rentabilidad", "")
+         return render_template('Success.html', mensaje = f"El producto más rentable es {producto_mas_rentable}, rentabilidad: {currencyFormat(rentabilidad)} ")
+     except Exception as e:
+        return render_template('Error.html', mensaje = f"Error {str(e)}")
+
 @app.route('/vender/<idProducto>')
 def vender(idProducto):
     try:
-        print(len(heladeria.productos))
         for producto in heladeria.productos:
             if producto.id == int(idProducto):
-                if producto.calcular_ingredientes() == False:
-                    return render_template('Warning.html', mensaje = f"No se pudo vender el producto {producto.nombre}, no existen suficientes ingredientes")
+                ingrediente_faltante = producto.obtener_ingrediente_faltante()
+                if ingrediente_faltante != None:
+                    return render_template('Warning.html', mensaje = f"“¡Oh no! Nos hemos quedado sin {ingrediente_faltante.nombre} 😥 para hacer {producto.nombre}")
                 vendido = heladeria.vender_producto(producto)
                 if vendido:
-                    return render_template('Success.html', mensaje = f"Se vendió el producto {producto.nombre}")
+                    return render_template('Success.html', mensaje = f"¡Vendido el producto {producto.nombre}!")
                 else:
                     return render_template('Warning.html', mensaje = f"No se pudo vender el producto {producto.nombre}")
         return render_template('Warning.html', mensaje = f"No se encontró el producto {idProducto}")
-    except ValueError as e:
+    except Exception as e:
         return render_template('Error.html', mensaje = f"Error {str(e)}")
 
 @app.route('/')

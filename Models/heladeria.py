@@ -45,7 +45,7 @@ class Heladeria():
     # Método que calcula el producto más rentable
     def obtener_producto_mas_rentable(self):
         lista = []
-        for producto in self._productos:
+        for producto in self.productos:
              lista.append({"nombre": producto.nombre, "rentabilidad": producto.calcular_rentabilidad()})
         return calcular_producto_mas_rentable(lista)
 
