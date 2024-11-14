@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos: Python Heladería</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Productos</h1>
+        <a href="/">🏠 Inicio</a>
+        <table>
+            <tr>
+                <th>id</th>
+                <th>nombre</th>
+                <th>precio</th>
+                <th>ventas_dia</th>
+                <th>precio_ventas_dia</th>
+                <th>tipo</th>
+                <th>Ingredientes</th>
+            </tr>
+        {% for producto in productos %}
+            <tr>
+                <td>{{ producto.id }}</td>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.ventas_dia }}</td>
+                <td>{{ producto.precio_ventas_dia }}</td>
+                <td>{{ producto.tipo }}</td>
+                <td>
+                    <table>
+                        {% for ingrediente in producto.ingredientes %}
+                            <tr>
+                                <td>{{ ingrediente.id }}</td>
+                                <td>{{ ingrediente.nombre }}</td>
+                                <td>{{ ingrediente.tipo }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
