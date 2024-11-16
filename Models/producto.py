@@ -2,17 +2,18 @@ from db import db
 from sqlalchemy import text, ForeignKey
 from funciones import *
 from Models.ingrediente import Ingrediente
+from sqlalchemy.ext.hybrid import hybrid_property
 
 # Clase que representa el producto
 class Producto(db.Model):
     __tablename__ = 'productos'
     id = db.Column(db.Integer, primary_key = True)
-    nombre = db.Column(db.String(45), nullable = False)
-    precio = db.Column(db.Integer, nullable = False)
+    _nombre = db.Column("nombre", db.String(45), nullable = False)
+    _precio = db.Column("precio", db.Integer, nullable = False)
     id_ingrediente1 = db.Column(db.Integer, nullable=False)
     id_ingrediente2 = db.Column(db.Integer, nullable=False)
     id_ingrediente3 = db.Column(db.Integer, nullable=False)
-    tipo = db.Column(db.String(15), nullable = False)
+    _tipo = db.Column("tipo", db.String(15), nullable = False)
     _ingredientes = None
     _ventas_dia = 0
     _precio_ventas_dia = 0
@@ -57,6 +58,8 @@ class Producto(db.Model):
         return True
     
      # Método que returna el ingrediente faltante de un producto, None si hay suficiente
+    
+    # Método que retorna el primer ingrediente faltante
     def obtener_ingrediente_faltante(self) -> Ingrediente:
         for ingrediente in self.ingredientes:
             if ingrediente.tipo == 'Complemento':
@@ -66,6 +69,57 @@ class Producto(db.Model):
                 if ingrediente.inventario < .2:
                     return ingrediente
         return None
+
+    @hybrid_property
+    def nombre(self) -> str:
+        """ Devuelve el valor del atributo privado 'nombre' """
+        return self._nombre
+    
+    @nombre.setter
+    def nombre(self, value:str) -> None:
+        """ 
+        Establece un nuevo valor para el atributo privado 'nombre'
+    
+        Valida que el valor enviado corresponda al tipo de dato del atributo
+        """ 
+        if isinstance(value, str):
+            self._nombre = value
+        else:
+            raise ValueError('Expected str')
+
+    @hybrid_property
+    def precio(self) -> int:
+        """ Devuelve el valor del atributo privado 'precio' """
+        return self._precio
+    
+    @precio.setter
+    def precio(self, value:int) -> None:
+        """ 
+        Establece un nuevo valor para el atributo privado 'precio'
+    
+        Valida que el valor enviado corresponda al tipo de dato del atributo
+        """ 
+        if isinstance(value, int):
+            self._precio = value
+        else:
+            raise ValueError('Expected int')
+        
+    @hybrid_property
+    def tipo(self) -> str:
+        """ Devuelve el valor del atributo privado 'tipo' """
+        return self._tipo
+    
+    @tipo.setter
+    def tipo(self, value:str) -> None:
+        """ 
+        Establece un nuevo valor para el atributo privado 'tipo'
+    
+        Valida que el valor enviado corresponda al tipo de dato del atributo
+        """ 
+        if isinstance(value, str):
+            self._tipo = value
+        else:
+            raise ValueError('Expected str')
 
     @property
     def ingredientes(self) -> list:

@@ -14,8 +14,9 @@ class Heladeria():
     # método que permite vender un producto
     # producto: producto a vender
     def vender_producto(self, producto: Producto) -> bool:
-        if not producto.calcular_ingredientes():
-            return False
+        ingredienteRestante = producto.obtener_ingrediente_faltante()
+        if ingredienteRestante is not None:
+            raise ValueError(f"Falta inventario del ingrediente {ingredienteRestante.nombre}")
 
         self.descontar_inventario(producto)
         producto.ventas_dia = producto.ventas_dia + 1
@@ -65,6 +66,12 @@ class Heladeria():
                     self.ingredientes.append(ingrediente)
         else:
             raise ValueError('Expected Producto')
+
+     #Método que determina si un ingrediente es sano
+    def ingrediente_es_sano(ingrediente: Ingrediente) -> bool:
+        if not isinstance(ingrediente, Ingrediente):
+            raise ValueError("El ingrediente no es del tipo esperado")
+        return ingrediente.es_sano()
 
     @property
     def productos(self) -> list:

@@ -84,4 +84,4 @@ def formatear_moneda(numero):
     """
 
     locale.setlocale(locale.LC_ALL, '')  # Utiliza la configuración regional del sistema
-    return locale.currency(numero, grouping=True)
+    return locale.currency(numero, grouping = True)
