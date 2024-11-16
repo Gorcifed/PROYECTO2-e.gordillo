@@ -22,10 +22,10 @@ class Ingrediente(db.Model):
     # Método que permite abastecer un ingrediente
     def abastecer(self) -> None:
         if self.tipo == 'Complemento':
-             self._inventario = self.inventario + decimal.Decimal(10.0)
+             self.inventario = self.inventario + decimal.Decimal(10.0)
              return
         # Es base
-        self._inventario = self.inventario + decimal.Decimal(5.0)
+        self.inventario = self.inventario + decimal.Decimal(5.0)
 
     # Método que permite renovar el inventario
     def renovar_inventario(self):
@@ -66,18 +66,18 @@ class Ingrediente(db.Model):
             raise ValueError('Expected int')
     
     @hybrid_property
-    def calorias(self) -> decimal:
+    def calorias(self) -> decimal.Decimal:
         """ Devuelve el valor del atributo privado 'calorias' """
         return self._calorias
     
     @calorias.setter
-    def calorias(self, value:decimal) -> None:
+    def calorias(self, value: decimal.Decimal) -> None:
         """ 
         Establece un nuevo valor para el atributo privado 'calorias'
     
         Valida que el valor enviado corresponda al tipo de dato del atributo
         """ 
-        if isinstance(value, decimal):
+        if isinstance(value, decimal.Decimal):
             self._calorias = value
         else:
             raise ValueError('Expected decimal')
@@ -100,18 +100,18 @@ class Ingrediente(db.Model):
             raise ValueError('Expected bool')
         
     @property
-    def inventario(self) -> decimal:
+    def inventario(self) -> decimal.Decimal:
         """ Devuelve el valor del atributo privado 'inventario' """
         return self._inventario
     
     @inventario.setter
-    def inventario(self, value:decimal) -> None:
+    def inventario(self, value: decimal.Decimal) -> None:
         """ 
         Establece un nuevo valor para el atributo privado 'inventario'
     
         Valida que el valor enviado corresponda al tipo de dato del atributo
         """ 
-        if isinstance(value, decimal):
+        if isinstance(value, decimal.Decimal):
             self._inventario = value
         else:
             raise ValueError('Expected decimal')

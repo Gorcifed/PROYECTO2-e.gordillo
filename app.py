@@ -9,10 +9,14 @@ import os
 
 load_dotenv(override=True)
 
-app = Flask(__name__, template_folder = "Views")
-DB_STRING_CONNECTION = f"mysql+pymysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
-app.config["SQLALCHEMY_DATABASE_URI"] = DB_STRING_CONNECTION
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+def create_app():
+    app = Flask(__name__, template_folder = "Views")
+    DB_STRING_CONNECTION = f"mysql+pymysql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+    app.config["SQLALCHEMY_DATABASE_URI"] = DB_STRING_CONNECTION
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    return app
+
+app = create_app()
 
 @app.template_filter()
 def currencyFormat(value):
