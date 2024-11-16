@@ -1,14 +1,15 @@
 import math
 import locale
+import decimal
 
 # Función que determina si un ingrediente es sano
 # calorias: Calorias totales del producto
 # es_vegetariano: Determina si el ingrediente es vegetariano
 # return: determina si el ingrediente es sano
-def es_sano_ingrediente(calorias: int, es_vegetariano: bool):
-    if isinstance(calorias, int):
+def es_sano_ingrediente(calorias: decimal.Decimal, es_vegetariano: bool):
+    if isinstance(calorias, decimal.Decimal):
         if isinstance(es_vegetariano, bool):
-            return es_vegetariano or calorias < 100
+            return es_vegetariano or calorias < decimal.Decimal(100)
         else:
             raise ValueError('Expected bool')
     else:
@@ -26,7 +27,7 @@ def calcular_calorias_producto(calorias: list, multiplicarFactor: bool) -> float
                 acumulador = acumulador + valor
     else:
         raise ValueError('Expected list')
-    factor = 1
+    factor = 1.0
     if multiplicarFactor:
         factor = .95
     return round(acumulador * factor, 2)
